@@ -1,0 +1,56 @@
+# 🤖 Agentic AI Journey — 150-Day Mastery Roadmap
+
+![Progress](https://img.shields.io/badge/Day-2%2F150-blue?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
+![Phase](https://img.shields.io/badge/Phase-1%3A%20Foundations-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-3fb950?style=for-the-badge)
+
+> **From Absolute Beginner to Industry-Leading Agentic AI Engineer in 150 Days.**  
+> Targeting roles: AI Agent Engineer · Agent Orchestration Architect · LLMOps Engineer
+
+---
+
+## 📅 Daily Progress
+
+| Day | Topic | Phase | Status |
+|-----|-------|-------|--------|
+| [Day 01](./day-01/) | Python Environment Setup & Modern Python | Phase 1 | ✅ Done |
+| [Day 02](./day-02/) | Data Structures & Algorithms That Agents Use | Phase 1 | ✅ Done |
+| Day 03 | Object-Oriented Python for Agent Architecture | Phase 1 | ⏳ |
+| Day 04 | Async Python — Non-Negotiable for Agents | Phase 1 | ⏳ |
+| Day 05 | APIs & HTTP — The Language Agents Speak | Phase 1 | ⏳ |
+| ... | ... | ... | ... |
+| Day 150 | Final Portfolio & Job Applications | Phase 7 | ⏳ |
+
+---
+
+## 🗺️ Roadmap Phases
+
+| Phase | Days | Topic |
+|-------|------|-------|
+| **Phase 1** | 1–14 | Python & Engineering Foundations |
+| **Phase 2** | 15–28 | AI/ML Essentials — Only What Agents Need |
+| **Phase 3** | 29–45 | LLM Mastery & Prompt Engineering |
+| **Phase 4** | 46–70 | Core Agentic AI — Tool Use, RAG & Single Agents |
+| **Phase 5** | 71–95 | Multi-Agent Systems & Orchestration |
+| **Phase 6** | 96–120 | Production Engineering & Protocols |
+| **Phase 7** | 121–150 | Advanced Specialization & Portfolio |
+
+---
+
+## 🛠️ Tech Stack
+
+`Python 3.11` `LangGraph` `CrewAI` `OpenAI API` `FastAPI` `Pydantic` `Docker` `PostgreSQL` `Redis` `MCP Protocol` `A2A Protocol`
+
+---
+
+## 📣 Follow the Journey
+
+- 💼 LinkedIn: [#AgenticAI](https://linkedin.com/in/) — daily posts
+- 🐙 GitHub: This repo — daily commits = daily proof of work
+
+---
+
+## 📄 License
+
+MIT — feel free to fork and follow along!
