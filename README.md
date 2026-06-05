@@ -1,6 +1,6 @@
 # 🤖 Agentic AI Journey — 150-Day Mastery Roadmap
 
-![Progress](https://img.shields.io/badge/Day-2%2F150-blue?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Day-3%2F150-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
 ![Phase](https://img.shields.io/badge/Phase-1%3A%20Foundations-orange?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-3fb950?style=for-the-badge)
@@ -16,7 +16,7 @@
 |-----|-------|-------|--------|
 | [Day 01](./day-01/) | Python Environment Setup & Modern Python | Phase 1 | ✅ Done |
 | [Day 02](./day-02/) | Data Structures & Algorithms That Agents Use | Phase 1 | ✅ Done |
-| Day 03 | Object-Oriented Python for Agent Architecture | Phase 1 | ⏳ |
+| [Day 03](./day-03/) | Object-Oriented Python for Agent Architecture | Phase 1 | ✅ Done |
 | Day 04 | Async Python — Non-Negotiable for Agents | Phase 1 | ⏳ |
 | Day 05 | APIs & HTTP — The Language Agents Speak | Phase 1 | ⏳ |
 | ... | ... | ... | ... |
