@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="te-en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 — APIs & HTTP | Agentic AI Learning Guide (Telugu-English)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --blue: #58a6ff;
+            --green: #3fb950;
+            --amber: #f0883e;
+            --red: #f85149;
+            --purple: #bc8cff;
+            --cyan: #39d2c0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Telugu', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media print {
+            body { padding: 20px; background: #fff; color: #1a1a2e; }
+            .card { border: 1px solid #ddd; background: #f8f9fa; }
+            .code-block { background: #1e1e2e; color: #e6edf3; }
+            .telugu-note { background: #fff3cd; border-color: #ffc107; }
+            .page-break { page-break-before: always; }
+            h1 { color: #1a1a2e; }
+            h2 { color: #2d3748; }
+            .concept-number { background: #3b82f6; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #1a1f36, #0d1117);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+        .header .badge {
+            display: inline-block;
+            background: var(--amber);
+            color: #000;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            color: var(--blue);
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .header .telugu-subtitle {
+            color: var(--amber);
+            font-size: 16px;
+            margin-top: 8px;
+            font-family: 'Noto Sans Telugu', sans-serif;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        /* Concept Header */
+        .concept-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .concept-number {
+            background: var(--blue);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .concept-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--blue);
+            margin: 24px 0 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--purple);
+            margin: 18px 0 8px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        /* Telugu Note */
+        .telugu-note {
+            background: rgba(240, 136, 62, 0.1);
+            border-left: 4px solid var(--amber);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+            font-family: 'Noto Sans Telugu', 'Inter', sans-serif;
+        }
+        .telugu-note .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin: 14px 0;
+            white-space: pre;
+        }
+        .code-block .comment { color: #6a737d; }
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .function { color: #d2a8ff; }
+        .code-block .class-name { color: #f0883e; }
+        .code-block .decorator { color: #ffa657; }
+        .code-block .number { color: #79c0ff; }
+        .code-block .output { color: #3fb950; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 14px;
+        }
+        th {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--blue);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Analogy box */
+        .analogy {
+            background: rgba(188, 140, 255, 0.1);
+            border-left: 4px solid var(--purple);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .analogy .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* Warning / Key point */
+        .key-point {
+            background: rgba(63, 185, 80, 0.1);
+            border-left: 4px solid var(--green);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .key-point .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .warning {
+            background: rgba(248, 81, 73, 0.1);
+            border-left: 4px solid var(--red);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .warning .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* Lists */
+        ul, ol { margin: 10px 0 10px 24px; }
+        li { margin-bottom: 6px; }
+
+        /* Highlight */
+        .highlight { color: var(--amber); font-weight: 600; }
+        .blue { color: var(--blue); }
+        .green { color: var(--green); }
+        .red { color: var(--red); }
+        .purple { color: var(--purple); }
+
+        /* Visual diagram */
+        .diagram {
+            background: rgba(57, 210, 192, 0.05);
+            border: 1px dashed var(--cyan);
+            border-radius: 8px;
+            padding: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 14px 0;
+            text-align: center;
+        }
+
+        .toc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+        .toc h2 { margin-top: 0; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin-bottom: 8px; font-size: 15px; }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="badge">📘 Day 5/150 — Learning Guide</div>
+    <h1>🌐 APIs & HTTP — The Language Agents Speak</h1>
+    <div class="subtitle">Production-grade API skills for Agentic AI Engineering</div>
+    <div class="telugu-subtitle">🇮🇳 Telugu-English mix lo easy గా నేర్చుకుందాం!</div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+    <h2>📋 ఈ Guide లో ఏం నేర్చుకుంటాం?</h2>
+    <ol>
+        <li><strong>HTTP Fundamentals</strong> — Agent tool call అంటే ఏంటి?</li>
+        <li><strong>HTTP Methods & Status Codes</strong> — GET, POST, 200, 429 అన్నీ</li>
+        <li><strong>Retry with Exponential Backoff</strong> — API fail అయితే ఏం చేయాలి?</li>
+        <li><strong>Production API Client</strong> — Real-world agent API client build చేద్దాం</li>
+        <li><strong>JSON Processing</strong> — OpenAI response ని parse చేయడం</li>
+        <li><strong>API Key Security</strong> — Keys ని safely manage చేయడం</li>
+        <li><strong>Practical Exercises</strong> — Hands-on practice</li>
+    </ol>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 1: HTTP FUNDAMENTALS -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card">
+    <div class="concept-header">
+        <div class="concept-number">1</div>
+        <div class="concept-title">HTTP Fundamentals — Agent Tool Call ఎలా Work అవుతుంది?</div>
+    </div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Explain</div>
+        మీరు Swiggy లో food order చేస్తారు కదా? మీరు phone లో "Order" button press చేస్తే — 
+        అది ఒక <strong>HTTP Request</strong> server కి వెళ్తుంది. Server food prepare చేసి 
+        "Order confirmed" అని <strong>HTTP Response</strong> పంపుతుంది.<br><br>
+        AI Agent కూడా exactly ఇలాగే work చేస్తుంది! Agent ఒక tool use చేయాలనుకుంటే — 
+        అది ఒక HTTP request పంపుతుంది. Tool response వచ్చాక agent next step decide చేస్తుంది.
+    </div>
+
+    <div class="analogy">
+        <div class="label">🎯 Real-Life Analogy</div>
+        <strong>HTTP Request</strong> = మీరు restaurant లో waiter కి order చెప్పడం<br>
+        <strong>HTTP Response</strong> = Waiter food తీసుకొచ్చి ఇవ్వడం<br>
+        <strong>Headers</strong> = "Table number 5, VIP customer" అని extra info చెప్పడం<br>
+        <strong>Body</strong> = Actual order — "2 biryanis, 1 raita"
+    </div>
+
+    <h2>HTTP Request Anatomy</h2>
+    <p>ప్రతి agent tool call ఇలా కనిపిస్తుంది:</p>
+
+    <div class="code-block"><span class="comment"># Agent "search" tool call = ఈ HTTP request!</span>
+
+<span class="class-name">POST</span> <span class="string">https://api.openai.com/v1/chat/completions</span>
+
+<span class="comment"># Headers — extra information</span>
+<span class="keyword">Authorization</span>: Bearer sk-proj-your-key-here
+<span class="keyword">Content-Type</span>: application/json
+
+<span class="comment"># Body — actual data (JSON format లో)</span>
+{
+    <span class="string">"model"</span>: <span class="string">"gpt-4o"</span>,
+    <span class="string">"messages"</span>: [
+        {<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Explain agents"</span>}
+    ]
+}</div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Line-by-Line Explanation</div>
+        <strong>POST</strong> — Server కి data పంపుతున్నాం (order place చేస్తున్నాం)<br>
+        <strong>URL</strong> — ఏ server కి పంపాలి? OpenAI server<br>
+        <strong>Authorization</strong> — "నా API key ఇది, నన్ను allow చెయ్యి" (VIP pass లాంటిది)<br>
+        <strong>Content-Type</strong> — "నేను JSON format లో data పంపుతున్నా"<br>
+        <strong>Body</strong> — Actual question: "Explain agents" అని GPT-4o ని అడుగుతున్నాం
+    </div>
+
+    <h2>Python లో HTTP Request ఎలా పంపాలి?</h2>
+
+    <div class="code-block"><span class="keyword">import</span> httpx  <span class="comment"># Modern HTTP library (requests కంటే better)</span>
+
+<span class="comment"># Method 1: Simple GET request</span>
+response = httpx.<span class="function">get</span>(<span class="string">"https://api.github.com/users/24A31A04N2"</span>)
+print(response.status_code)  <span class="comment"># 200 = success!</span>
+print(response.<span class="function">json</span>())       <span class="comment"># Response data (JSON → dict)</span>
+
+<span class="comment"># Method 2: POST with headers and body</span>
+response = httpx.<span class="function">post</span>(
+    <span class="string">"https://api.openai.com/v1/chat/completions"</span>,
+    headers={
+        <span class="string">"Authorization"</span>: <span class="string">f"Bearer {api_key}"</span>,
+        <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,
+    },
+    json={
+        <span class="string">"model"</span>: <span class="string">"gpt-4o"</span>,
+        <span class="string">"messages"</span>: [{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Hi"</span>}],
+    },
+)
+
+<span class="comment"># Response check చేయడం</span>
+<span class="keyword">if</span> response.status_code == <span class="number">200</span>:
+    data = response.<span class="function">json</span>()
+    print(<span class="string">"Success!"</span>, data)
+<span class="keyword">else</span>:
+    print(<span class="string">f"Error: {response.status_code}"</span>)</div>
+
+    <div class="key-point">
+        <div class="label">💡 Key Point</div>
+        <strong>httpx</strong> use చేయండి, <strong>requests</strong> కాదు. ఎందుకంటే httpx async support ఇస్తుంది — 
+        agents కి async mandatory! (<code>async with httpx.AsyncClient()</code>)
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 2: HTTP METHODS & STATUS CODES -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card">
+    <div class="concept-header">
+        <div class="concept-number">2</div>
+        <div class="concept-title">HTTP Methods & Status Codes — Complete Guide</div>
+    </div>
+
+    <h2>HTTP Methods (Request Types)</h2>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Simple గా</div>
+        ఒక Restaurant లో మీరు waiter తో ఏం చేయగలరో — HTTP methods కూడా అవే!
+    </div>
+
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>ఏం చేస్తుంది?</th>
+            <th>Restaurant Analogy</th>
+            <th>Agent Example</th>
+        </tr>
+        <tr>
+            <td><strong class="blue">GET</strong></td>
+            <td>Data తెచ్చుకోవడం (read)</td>
+            <td>Menu card చూపించు</td>
+            <td>Search results fetch చేయడం</td>
+        </tr>
+        <tr>
+            <td><strong class="green">POST</strong></td>
+            <td>New data పంపడం (create)</td>
+            <td>New order place చేయడం</td>
+            <td>ChatGPT కి question పంపడం</td>
+        </tr>
+        <tr>
+            <td><strong class="amber">PUT</strong></td>
+            <td>Existing data update చేయడం</td>
+            <td>Order modify చేయడం</td>
+            <td>Agent state update చేయడం</td>
+        </tr>
+        <tr>
+            <td><strong class="red">DELETE</strong></td>
+            <td>Data delete చేయడం</td>
+            <td>Order cancel చేయడం</td>
+            <td>Conversation history clear</td>
+        </tr>
+        <tr>
+            <td><strong class="purple">PATCH</strong></td>
+            <td>Partial update</td>
+            <td>"Extra raita add చెయ్యి"</td>
+            <td>Config లో ఒక field మార్చడం</td>
+        </tr>
+    </table>
+
+    <h2>Status Codes — Server ఏం చెప్తుంది?</h2>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో</div>
+        Status code అంటే — server response లో "ఏం జరిగింది" అని చెప్పే number.
+        Waiter "Ready sir" అంటే 200, "Item లేదు" అంటే 404!
+    </div>
+
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Telugu Meaning</th>
+            <th>Agent ఏం చేయాలి?</th>
+        </tr>
+        <tr>
+            <td><strong class="green">200</strong></td>
+            <td>OK</td>
+            <td>అంతా బాగుంది, result వచ్చింది ✅</td>
+            <td>Result process చేయి</td>
+        </tr>
+        <tr>
+            <td><strong class="green">201</strong></td>
+            <td>Created</td>
+            <td>New item create అయింది ✅</td>
+            <td>New resource save చేయి</td>
+        </tr>
+        <tr>
+            <td><strong class="amber">400</strong></td>
+            <td>Bad Request</td>
+            <td>Request తప్పుగా ఉంది ❌</td>
+            <td>Request fix చేసి retry</td>
+        </tr>
+        <tr>
+            <td><strong class="red">401</strong></td>
+            <td>Unauthorized</td>
+            <td>API key wrong / expired 🔑</td>
+            <td>Key check చేయి</td>
+        </tr>
+        <tr>
+            <td><strong class="red">403</strong></td>
+            <td>Forbidden</td>
+            <td>Permission లేదు 🚫</td>
+            <td>Access level check చేయి</td>
+        </tr>
+        <tr>
+            <td><strong class="amber">404</strong></td>
+            <td>Not Found</td>
+            <td>ఆ page/resource లేదు 🔍</td>
+            <td>URL correct గా ఉందా check</td>
+        </tr>
+        <tr>
+            <td><strong class="highlight">429</strong></td>
+            <td>Rate Limited</td>
+            <td>చాలా fast గా requests పంపుతున్నావ్ 🐌</td>
+            <td><strong>RETRY with backoff!</strong></td>
+        </tr>
+        <tr>
+            <td><strong class="red">500</strong></td>
+            <td>Server Error</td>
+            <td>Server crash అయింది 💥</td>
+            <td>RETRY — server side problem</td>
+        </tr>
+        <tr>
+            <td><strong class="red">503</strong></td>
+            <td>Service Unavailable</td>
+            <td>Server busy/down 🔧</td>
+            <td>RETRY — కొంచెం wait చేయి</td>
+        </tr>
+    </table>
+
+    <div class="code-block"><span class="comment"># Python లో status codes handle చేయడం</span>
+
+response = <span class="keyword">await</span> client.<span class="function">get</span>(<span class="string">"/search"</span>)
+
+<span class="keyword">if</span> response.status_code == <span class="number">200</span>:
+    <span class="comment"># Success! Data use చేయి</span>
+    data = response.<span class="function">json</span>()
+
+<span class="keyword">elif</span> response.status_code == <span class="number">429</span>:
+    <span class="comment"># Rate limited! Wait చేసి retry చెయ్యి</span>
+    retry_after = response.headers.<span class="function">get</span>(<span class="string">"Retry-After"</span>, <span class="number">5</span>)
+    <span class="keyword">await</span> asyncio.<span class="function">sleep</span>(<span class="keyword">int</span>(retry_after))
+    <span class="comment"># Retry the request...</span>
+
+<span class="keyword">elif</span> response.status_code >= <span class="number">500</span>:
+    <span class="comment"># Server error! Retry చెయ్యి</span>
+    <span class="keyword">raise</span> <span class="class-name">RetryableError</span>(<span class="string">"Server down"</span>)
+
+<span class="keyword">else</span>:
+    <span class="comment"># Client error (400-499) — fix చేయాలి</span>
+    <span class="keyword">raise</span> <span class="class-name">ValueError</span>(<span class="string">f"Error: {response.status_code}"</span>)</div>
+
+    <div class="key-point">
+        <div class="label">💡 Important Rule</div>
+        <strong>429 (Rate Limited)</strong> — ఇది error కాదు! Server "slow down" అని signal ఇస్తోంది.
+        Production agents ఈ signal handle చేయాలి — లేకపోతే crash అవుతాయి!
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 3: RETRY + EXPONENTIAL BACKOFF -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card page-break">
+    <div class="concept-header">
+        <div class="concept-number">3</div>
+        <div class="concept-title">Retry with Exponential Backoff — API Fail అయితే ఏం చేయాలి?</div>
+    </div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Explain</div>
+        మీరు friend కి phone చేస్తున్నారు — busy వస్తోంది. ఏం చేస్తారు?<br><br>
+        ❌ <strong>Wrong way:</strong> వెంటనే మళ్ళీ call, మళ్ళీ call, మళ్ళీ call... (irritating!)<br>
+        ✅ <strong>Right way:</strong> 1 sec wait → call → busy → 2 sec wait → call → busy → 4 sec wait → call → answer! 🎉<br><br>
+        ఇది <strong>Exponential Backoff</strong>! ప్రతిసారి wait time double అవుతుంది.
+        ఇలా చేస్తే server కి rest ఇస్తున్నాం, eventually response వస్తుంది.
+    </div>
+
+    <h2>Exponential Backoff ఎలా Work అవుతుంది?</h2>
+
+    <div class="diagram">
+        <strong>Formula:</strong> delay = base_delay × 2^attempt × random_jitter<br><br>
+        Attempt 0: 1.0 × 2⁰ = <span class="blue">1.0s</span>   █<br>
+        Attempt 1: 1.0 × 2¹ = <span class="blue">2.0s</span>   ██<br>
+        Attempt 2: 1.0 × 2² = <span class="amber">4.0s</span>   ████<br>
+        Attempt 3: 1.0 × 2³ = <span class="amber">8.0s</span>   ████████<br>
+        Attempt 4: 1.0 × 2⁴ = <span class="red">16.0s</span>  ████████████████<br>
+        Attempt 5: 1.0 × 2⁵ = <span class="red">32.0s</span>  ████████████████████████████████<br><br>
+        <span class="green">+ Jitter (random variation) add చేస్తాం so that</span><br>
+        <span class="green">1000 agents ఒకేసారి retry చేయకుండా!</span>
+    </div>
+
+    <h2>Python Implementation</h2>
+
+    <div class="code-block"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass
+<span class="keyword">import</span> random, asyncio
+
+<span class="decorator">@dataclass</span>
+<span class="keyword">class</span> <span class="class-name">RetryConfig</span>:
+    <span class="string">"""Retry settings — ఎన్నిసార్లు try చేయాలి, ఎంత wait చేయాలి"""</span>
+    max_retries: <span class="keyword">int</span> = <span class="number">3</span>       <span class="comment"># Maximum 3 retries</span>
+    base_delay: <span class="keyword">float</span> = <span class="number">1.0</span>   <span class="comment"># Starting wait: 1 second</span>
+    max_delay: <span class="keyword">float</span> = <span class="number">30.0</span>    <span class="comment"># Maximum wait: 30 seconds</span>
+    backoff_factor: <span class="keyword">float</span> = <span class="number">2.0</span> <span class="comment"># Double every time</span>
+    jitter: <span class="keyword">bool</span> = <span class="number">True</span>       <span class="comment"># Add randomness</span>
+
+    <span class="keyword">def</span> <span class="function">get_delay</span>(self, attempt: <span class="keyword">int</span>) -> <span class="keyword">float</span>:
+        <span class="string">"""ప్రతి attempt కి delay calculate చేయడం"""</span>
+        <span class="comment"># base × 2^attempt = exponential growth</span>
+        delay = <span class="keyword">min</span>(
+            self.base_delay * (self.backoff_factor ** attempt),
+            self.max_delay,  <span class="comment"># 30s కంటే ఎక్కువ wait చేయకు</span>
+        )
+        <span class="keyword">if</span> self.jitter:
+            <span class="comment"># Random variation add చేయి (0.5x to 1.5x)</span>
+            delay *= random.<span class="function">uniform</span>(<span class="number">0.5</span>, <span class="number">1.5</span>)
+        <span class="keyword">return</span> <span class="keyword">round</span>(delay, <span class="number">2</span>)</div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Code Explanation</div>
+        <strong>max_retries = 3</strong> — Maximum 3 సార్లు try చేస్తాం<br>
+        <strong>base_delay = 1.0</strong> — First time 1 second wait<br>
+        <strong>backoff_factor = 2.0</strong> — ప్రతిసారి delay double అవుతుంది (1→2→4→8)<br>
+        <strong>max_delay = 30.0</strong> — ఎంత delay అయినా 30 seconds కంటే ఎక్కువ wait చేయం<br>
+        <strong>jitter = True</strong> — Random variation add చేస్తాం (thundering herd problem avoid కోసం)
+    </div>
+
+    <h2>@with_retry Decorator — Automatic Retry</h2>
+
+    <div class="code-block"><span class="keyword">def</span> <span class="function">with_retry</span>(config=<span class="keyword">None</span>):
+    <span class="string">"""
+    ఈ decorator ఏ function కైనా add చేస్తే
+    automatic గా retry logic వస్తుంది!
+    """</span>
+    <span class="keyword">if</span> config <span class="keyword">is None</span>:
+        config = <span class="class-name">RetryConfig</span>()
+
+    <span class="keyword">def</span> <span class="function">decorator</span>(func):
+        <span class="keyword">async def</span> <span class="function">wrapper</span>(*args, **kwargs):
+            <span class="keyword">for</span> attempt <span class="keyword">in</span> <span class="keyword">range</span>(config.max_retries + <span class="number">1</span>):
+                <span class="keyword">try</span>:
+                    result = <span class="keyword">await</span> func(*args, **kwargs)
+
+                    <span class="comment"># 429 or 500 వస్తే retry చెయ్యి</span>
+                    <span class="keyword">if</span> result.is_retryable:
+                        <span class="keyword">raise</span> <span class="class-name">RetryableError</span>(...)
+                    <span class="keyword">return</span> result  <span class="comment"># Success!</span>
+
+                <span class="keyword">except</span> <span class="class-name">RetryableError</span>:
+                    <span class="keyword">if</span> attempt < config.max_retries:
+                        delay = config.<span class="function">get_delay</span>(attempt)
+                        print(<span class="string">f"Retry {attempt+1}..."</span>)
+                        <span class="keyword">await</span> asyncio.<span class="function">sleep</span>(delay)
+                    <span class="keyword">else</span>:
+                        <span class="keyword">raise</span>  <span class="comment"># అన్ని retries fail!</span>
+        <span class="keyword">return</span> wrapper
+    <span class="keyword">return</span> decorator
+
+<span class="comment"># Usage — just add @with_retry()!</span>
+<span class="decorator">@with_retry</span>()
+<span class="keyword">async def</span> <span class="function">search</span>(query):
+    <span class="comment"># ఈ function automatically retry అవుతుంది</span>
+    response = <span class="keyword">await</span> client.<span class="function">get</span>(<span class="string">f"/search?q={query}"</span>)
+    <span class="keyword">return</span> response</div>
+
+    <div class="analogy">
+        <div class="label">🎯 Real-Life Analogy</div>
+        <strong>Decorator</strong> = Phone case లాంటిది. Phone (function) ని protect చేస్తుంది.<br>
+        <code>@with_retry()</code> add చేస్తే ఏ function అయినా automatically retry capability వస్తుంది.<br>
+        Function code change చేయక్కర్లేదు — just decorator add చేస్తే చాలు!
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 4: PRODUCTION API CLIENT -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card page-break">
+    <div class="concept-header">
+        <div class="concept-number">4</div>
+        <div class="concept-title">Production API Client — Agent HTTP Client Build చేద్దాం</div>
+    </div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Explain</div>
+        Agent ki tools ఉంటాయి — search, analyze, summarize. ప్రతి tool ఒక API call.
+        ఈ API calls ని manage చేసే system ని <strong>API Client</strong> అంటారు.<br><br>
+        ఒక delivery company లాగా think చేయండి:<br>
+        - <strong>Auth</strong> = Delivery person ID card<br>
+        - <strong>Retry</strong> = Customer ఇంట్లో లేకపోతే మళ్ళీ వస్తాడు<br>
+        - <strong>Parallel calls</strong> = 5 deliveries ఒకేసారి different areas కి<br>
+        - <strong>Metrics</strong> = ఎన్ని deliveries success, ఎంత time పట్టింది — tracking
+    </div>
+
+    <h2>AgentAPIClient — Full Code</h2>
+
+    <div class="code-block"><span class="keyword">class</span> <span class="class-name">AgentAPIClient</span>:
+    <span class="string">"""
+    Production-grade API client for agents.
+    Features: auth, retry, parallel, metrics.
+    """</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, base_url, api_key, timeout_ms=<span class="number">5000</span>):
+        self.base_url = base_url
+        self.timeout_ms = timeout_ms
+        self.metrics = <span class="class-name">APIMetrics</span>()
+
+        <span class="comment"># Default headers — ప్రతి request తో వెళ్తాయి</span>
+        self._headers = {
+            <span class="string">"Authorization"</span>: <span class="string">f"Bearer {api_key}"</span>,
+            <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,
+            <span class="string">"User-Agent"</span>: <span class="string">"AgentClient/1.0"</span>,
+        }
+
+    <span class="decorator">@with_retry</span>()  <span class="comment"># ← Auto-retry on failure!</span>
+    <span class="keyword">async def</span> <span class="function">get</span>(self, endpoint, params=<span class="keyword">None</span>):
+        <span class="string">"""GET request with automatic retry"""</span>
+        self.metrics.total_calls += <span class="number">1</span>
+        response = <span class="keyword">await</span> self.<span class="function">_request</span>(<span class="string">"GET"</span>, endpoint)
+
+        <span class="keyword">if</span> response.is_success:
+            self.metrics.successful += <span class="number">1</span>
+        <span class="keyword">return</span> response
+
+    <span class="keyword">async def</span> <span class="function">get_many</span>(self, endpoints):
+        <span class="string">"""
+        Multiple endpoints ని PARALLEL లో call చేయడం!
+        asyncio.gather() use చేస్తాం.
+        """</span>
+        <span class="keyword">return await</span> asyncio.<span class="function">gather</span>(
+            *[self.<span class="function">get</span>(ep) <span class="keyword">for</span> ep <span class="keyword">in</span> endpoints]
+        )</div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Code Breakdown</div>
+        <strong>__init__</strong> — Client setup: base URL, API key, default headers set చేస్తాం<br>
+        <strong>@with_retry()</strong> — ఈ decorator add చేస్తే get() method automatically retry అవుతుంది<br>
+        <strong>get()</strong> — Single endpoint call + metrics tracking<br>
+        <strong>get_many()</strong> — Multiple endpoints ని parallel గా call — <code>asyncio.gather()</code> use చేసి!
+    </div>
+
+    <h2>Usage Example</h2>
+
+    <div class="code-block"><span class="comment"># 1. Client create చేయడం</span>
+client = <span class="class-name">AgentAPIClient</span>(
+    base_url=<span class="string">"https://api.openai.com"</span>,
+    api_key=<span class="string">"sk-proj-your-key"</span>,
+)
+
+<span class="comment"># 2. Single API call</span>
+response = <span class="keyword">await</span> client.<span class="function">get</span>(<span class="string">"/v1/models"</span>)
+print(response.data)  <span class="comment"># Available models list</span>
+
+<span class="comment"># 3. Parallel calls — 5 APIs ఒకేసారి!</span>
+responses = <span class="keyword">await</span> client.<span class="function">get_many</span>([
+    <span class="string">"/search"</span>,      <span class="comment"># Tool 1</span>
+    <span class="string">"/analyze"</span>,     <span class="comment"># Tool 2</span>
+    <span class="string">"/summarize"</span>,   <span class="comment"># Tool 3</span>
+    <span class="string">"/fact-check"</span>,  <span class="comment"># Tool 4</span>
+    <span class="string">"/translate"</span>,   <span class="comment"># Tool 5</span>
+])
+
+<span class="comment"># 4. Metrics check చేయడం</span>
+print(client.metrics.<span class="function">report</span>())
+<span class="comment"># {'total': 6, 'success_rate': '100%', 'avg_latency': '188ms'}</span></div>
+
+    <div class="diagram">
+        <strong>Parallel Calls Visualization:</strong><br><br>
+        /search     ════════ 165ms ✅<br>
+        /analyze    ════════════ 273ms ✅<br>
+        /summarize  ══════════ 245ms ✅<br>
+        /fact-check ═══ 82ms ✅<br>
+        /translate  ═══════ 174ms ✅<br>
+        ─────────────────────────────<br>
+        Total: 273ms (slowest tool time)<br>
+        Without parallel: 939ms (sum of all)<br>
+        <span class="green"><strong>Speedup: 3.4x faster!</strong></span>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 5: JSON PROCESSING -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card page-break">
+    <div class="concept-header">
+        <div class="concept-number">5</div>
+        <div class="concept-title">JSON Processing — OpenAI Response Parse చేయడం</div>
+    </div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Explain</div>
+        <strong>JSON</strong> = JavaScript Object Notation. ఇది internet లో data share చేసే standard format.<br><br>
+        Python dict లాగే ఉంటుంది — <code>{"key": "value"}</code><br>
+        Agent ప్రతి API call నుండి JSON response receive చేస్తుంది.
+        దాన్ని correctly parse చేయడం roz ka kaam!
+    </div>
+
+    <h2>Real OpenAI Response Structure</h2>
+    <p>ChatGPT ని tool calling తో call చేస్తే ఈ response వస్తుంది:</p>
+
+    <div class="code-block"><span class="comment"># OpenAI real response (simplified)</span>
+response_json = {
+    <span class="string">"id"</span>: <span class="string">"chatcmpl-abc123"</span>,
+    <span class="string">"model"</span>: <span class="string">"gpt-4o"</span>,
+    <span class="string">"choices"</span>: [                    <span class="comment"># ← List of choices</span>
+        {
+            <span class="string">"index"</span>: <span class="number">0</span>,
+            <span class="string">"message"</span>: {               <span class="comment"># ← Nested dict!</span>
+                <span class="string">"role"</span>: <span class="string">"assistant"</span>,
+                <span class="string">"content"</span>: <span class="keyword">None</span>,        <span class="comment"># ← No text (tool call instead)</span>
+                <span class="string">"tool_calls"</span>: [          <span class="comment"># ← Agent decided to use a tool!</span>
+                    {
+                        <span class="string">"id"</span>: <span class="string">"call_xyz"</span>,
+                        <span class="string">"type"</span>: <span class="string">"function"</span>,
+                        <span class="string">"function"</span>: {
+                            <span class="string">"name"</span>: <span class="string">"search_web"</span>,  <span class="comment"># Tool name</span>
+                            <span class="string">"arguments"</span>: <span class="string">'{"query": "LangGraph docs"}'</span>
+                            <span class="comment"># ↑ Arguments = STRING (JSON inside JSON!)</span>
+                        }
+                    }
+                ]
+            },
+            <span class="string">"finish_reason"</span>: <span class="string">"tool_calls"</span>
+        }
+    ],
+    <span class="string">"usage"</span>: {
+        <span class="string">"prompt_tokens"</span>: <span class="number">150</span>,
+        <span class="string">"completion_tokens"</span>: <span class="number">42</span>,
+        <span class="string">"total_tokens"</span>: <span class="number">192</span>
+    }
+}</div>
+
+    <h2>Parse చేయడం — Step by Step</h2>
+
+    <div class="code-block"><span class="keyword">import</span> json
+
+<span class="comment"># Step 1: choices list లో first item తీయి</span>
+choices = response_json[<span class="string">"choices"</span>]  <span class="comment"># List</span>
+first_choice = choices[<span class="number">0</span>]              <span class="comment"># First item</span>
+
+<span class="comment"># Step 2: message object తీయి</span>
+message = first_choice[<span class="string">"message"</span>]
+
+<span class="comment"># Step 3: tool_calls extract చేయి</span>
+tool_calls = message.<span class="function">get</span>(<span class="string">"tool_calls"</span>, [])
+<span class="comment"># .get() use చేయి — key లేకపోతే error రాదు!</span>
+
+<span class="comment"># Step 4: ప్రతి tool call process చేయి</span>
+<span class="keyword">for</span> tc <span class="keyword">in</span> tool_calls:
+    func = tc[<span class="string">"function"</span>]
+    tool_name = func[<span class="string">"name"</span>]        <span class="comment"># "search_web"</span>
+
+    <span class="comment"># IMPORTANT: arguments is a STRING, not a dict!</span>
+    <span class="comment"># json.loads() తో dict లోకి convert చేయాలి</span>
+    arguments = json.<span class="function">loads</span>(func[<span class="string">"arguments"</span>])
+    <span class="comment"># {"query": "LangGraph docs"}</span>
+
+    print(<span class="string">f"Tool: {tool_name}"</span>)
+    print(<span class="string">f"Args: {arguments}"</span>)
+
+<span class="comment"># Step 5: Token usage track చేయి</span>
+tokens = response_json[<span class="string">"usage"</span>][<span class="string">"total_tokens"</span>]
+print(<span class="string">f"Tokens used: {tokens}"</span>)  <span class="comment"># 192</span></div>
+
+    <div class="warning">
+        <div class="label">⚠️ Common Mistake</div>
+        <strong>arguments</strong> field ఒక <strong>STRING</strong> — dict కాదు!<br>
+        <code>"arguments": '{"query": "LangGraph"}'</code> ← ఇది string<br>
+        <code>json.loads()</code> use చేసి dict లోకి convert చేయాలి.<br><br>
+        ఈ mistake చాలా మంది beginners చేస్తారు — <code>arguments["query"]</code> direct గా access చేస్తారు → <strong>TypeError</strong> వస్తుంది!
+    </div>
+
+    <h2>Safe JSON Access — .get() Method</h2>
+
+    <div class="code-block"><span class="comment"># ❌ WRONG — key లేకపోతే KeyError crash!</span>
+value = data[<span class="string">"key_that_might_not_exist"</span>]  <span class="comment"># 💥 KeyError!</span>
+
+<span class="comment"># ✅ RIGHT — .get() use చేస్తే default value వస్తుంది</span>
+value = data.<span class="function">get</span>(<span class="string">"key_that_might_not_exist"</span>, <span class="string">"default"</span>)
+<span class="comment"># Key లేకపోతే "default" return అవుతుంది, crash కాదు!</span>
+
+<span class="comment"># ✅ Nested access — step by step</span>
+choices = data.<span class="function">get</span>(<span class="string">"choices"</span>, [])
+<span class="keyword">if</span> choices:
+    message = choices[<span class="number">0</span>].<span class="function">get</span>(<span class="string">"message"</span>, {})
+    tool_calls = message.<span class="function">get</span>(<span class="string">"tool_calls"</span>, [])
+<span class="keyword">else</span>:
+    tool_calls = []
+    print(<span class="string">"No choices in response!"</span>)</div>
+
+    <div class="key-point">
+        <div class="label">💡 Pro Tip</div>
+        Always <code>.get()</code> use చేయండి, direct <code>[]</code> access కాదు.
+        API responses unpredictable — ఏ key అయినా missing ఉండవచ్చు.
+        Production agent ఎప్పుడూ crash అవ్వకూడదు!
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 6: API KEY SECURITY -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card">
+    <div class="concept-header">
+        <div class="concept-number">6</div>
+        <div class="concept-title">API Key Security — Keys ని Safely Manage చేయడం</div>
+    </div>
+
+    <div class="warning">
+        <div class="label">🚨 Critical Rule</div>
+        API keys ని <strong>NEVER</strong> code లో hardcode చేయకండి!<br>
+        GitHub కి push చేస్తే bots automatic గా detect చేసి misuse చేస్తాయి.<br>
+        OpenAI key leak అయితే — thousands of dollars bill వచ్చే risk ఉంది! 💸
+    </div>
+
+    <h2>Method 1: .env Files (Recommended)</h2>
+
+    <div class="code-block"><span class="comment"># Step 1: .env file create చేయి (project root లో)</span>
+<span class="comment"># File: .env</span>
+
+<span class="class-name">OPENAI_API_KEY</span>=sk-proj-your-actual-key-here
+<span class="class-name">ANTHROPIC_API_KEY</span>=sk-ant-your-actual-key-here
+<span class="class-name">GOOGLE_API_KEY</span>=AIzaSy-your-actual-key-here</div>
+
+    <div class="code-block"><span class="comment"># Step 2: .gitignore లో .env add చేయి</span>
+<span class="comment"># File: .gitignore</span>
+
+.env
+.env.local
+*.key</div>
+
+    <div class="code-block"><span class="comment"># Step 3: Python లో load చేయి</span>
+<span class="keyword">import</span> os
+<span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+
+<span class="comment"># .env file load చేయి</span>
+<span class="function">load_dotenv</span>()
+
+<span class="comment"># Keys access చేయి</span>
+openai_key = os.<span class="function">getenv</span>(<span class="string">"OPENAI_API_KEY"</span>)
+anthropic_key = os.<span class="function">getenv</span>(<span class="string">"ANTHROPIC_API_KEY"</span>)
+
+<span class="comment"># Key exist అవుతుందో check చేయి</span>
+<span class="keyword">if not</span> openai_key:
+    <span class="keyword">raise</span> <span class="class-name">ValueError</span>(
+        <span class="string">"OPENAI_API_KEY missing! Add to .env file"</span>
+    )
+
+<span class="comment"># Use the key</span>
+client = <span class="class-name">AgentAPIClient</span>(
+    base_url=<span class="string">"https://api.openai.com"</span>,
+    api_key=openai_key,  <span class="comment"># ← From .env, not hardcoded!</span>
+)</div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో Summary</div>
+        <strong>.env file</strong> = Secret locker లాంటిది. Keys అన్నీ ఇక్కడ store చేస్తాం.<br>
+        <strong>.gitignore</strong> = "ఈ file ని GitHub కి upload చేయకు" అని Git కి చెప్పడం.<br>
+        <strong>os.getenv()</strong> = .env file నుండి key read చేయడం.<br>
+        <strong>load_dotenv()</strong> = .env file ని Python memory లోకి load చేయడం.<br><br>
+        <strong>Install:</strong> <code>pip install python-dotenv</code>
+    </div>
+
+    <h2>❌ vs ✅ Comparison</h2>
+
+    <div class="code-block"><span class="comment"># ❌ WRONG — Key hardcoded! GitHub lo leak avuthundi!</span>
+client = <span class="class-name">OpenAI</span>(api_key=<span class="string">"sk-proj-abc123xyz789"</span>)
+
+<span class="comment"># ✅ RIGHT — Key from environment variable</span>
+client = <span class="class-name">OpenAI</span>(api_key=os.<span class="function">getenv</span>(<span class="string">"OPENAI_API_KEY"</span>))</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONCEPT 7: PRACTICAL EXERCISES -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card page-break">
+    <div class="concept-header">
+        <div class="concept-number">7</div>
+        <div class="concept-title">🏋️ Practical Exercises — Hands-on Practice</div>
+    </div>
+
+    <div class="telugu-note">
+        <div class="label">🇮🇳 Telugu లో</div>
+        ఈ exercises complete చేస్తే Day 5 concepts fully master అవుతారు!
+        ప్రతి exercise ఒక real-world agent skill build చేస్తుంది.
+    </div>
+
+    <h2>Exercise 1: HTTP Request Builder (Easy)</h2>
+    <p>ఒక function write చేయండి — method, URL, headers, body accept చేసి formatted HTTP request print చేయాలి.</p>
+
+    <div class="code-block"><span class="comment"># Build this function:</span>
+<span class="keyword">def</span> <span class="function">build_request</span>(method, url, headers=<span class="keyword">None</span>, body=<span class="keyword">None</span>):
+    <span class="string">"""
+    HTTP request formatted string return చేయాలి.
+    
+    Example:
+    build_request("POST", "https://api.openai.com/v1/chat/completions",
+                  headers={"Authorization": "Bearer sk-***"},
+                  body={"model": "gpt-4o"})
+    
+    Output:
+    POST https://api.openai.com/v1/chat/completions
+      Authorization: Bearer sk-***
+      Body: {"model": "gpt-4o"}
+    """</span>
+    <span class="comment"># 👉 మీరు code write చేయండి!</span>
+    <span class="keyword">pass</span></div>
+
+    <h2>Exercise 2: Retry Simulator (Medium)</h2>
+    <p>Random గా 429/500/200 return చేసే function write చేయండి, with_retry decorator add చేసి test చేయండి.</p>
+
+    <div class="code-block"><span class="comment"># Build this:</span>
+<span class="keyword">async def</span> <span class="function">flaky_api</span>():
+    <span class="string">"""70% success, 15% rate limit, 15% server error"""</span>
+    roll = random.<span class="function">random</span>()
+    <span class="keyword">if</span> roll < <span class="number">0.7</span>:
+        <span class="keyword">return</span> <span class="class-name">HTTPResponse</span>(<span class="number">200</span>, {<span class="string">"data"</span>: <span class="string">"success"</span>})
+    <span class="keyword">elif</span> roll < <span class="number">0.85</span>:
+        <span class="keyword">return</span> <span class="class-name">HTTPResponse</span>(<span class="number">429</span>, {<span class="string">"error"</span>: <span class="string">"rate limited"</span>})
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="class-name">HTTPResponse</span>(<span class="number">500</span>, {<span class="string">"error"</span>: <span class="string">"server error"</span>})
+
+<span class="comment"># 👉 @with_retry() add చేసి test చేయండి!</span>
+<span class="comment"># ఎన్ని retries అయ్యాయో count చేయండి</span></div>
+
+    <h2>Exercise 3: OpenAI Response Parser (Medium)</h2>
+    <p>Real OpenAI response ని parse చేసి clean format లో output ఇవ్వండి.</p>
+
+    <div class="code-block"><span class="comment"># Build this function:</span>
+<span class="keyword">def</span> <span class="function">parse_openai_response</span>(response: <span class="keyword">dict</span>) -> <span class="keyword">dict</span>:
+    <span class="string">"""
+    Input: Raw OpenAI response (nested JSON)
+    Output: Clean dict with:
+        - model name
+        - list of tool calls (name + arguments as dict)
+        - total tokens used
+        - finish reason
+    
+    Handle edge cases:
+        - No choices in response
+        - No tool_calls in message
+        - Invalid JSON in arguments
+    """</span>
+    <span class="comment"># 👉 మీరు code write చేయండి!</span>
+    <span class="keyword">pass</span></div>
+
+    <h2>Exercise 4: Parallel API Client (Hard)</h2>
+    <p>5 different URLs ని parallel గా fetch చేసి, timing comparison show చేయండి.</p>
+
+    <div class="code-block"><span class="comment"># Build this:</span>
+<span class="keyword">async def</span> <span class="function">benchmark_parallel_vs_sequential</span>():
+    <span class="string">"""
+    5 APIs call చేయండి:
+    1. Sequential గా (one by one)
+    2. Parallel గా (asyncio.gather)
+    
+    Both times print చేసి speedup calculate చేయండి.
+    """</span>
+    <span class="comment"># 👉 మీరు code write చేయండి!</span>
+    <span class="keyword">pass</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SUMMARY -->
+<!-- ═══════════════════════════════════════ -->
+<div class="card">
+    <div class="concept-header">
+        <div class="concept-number">✅</div>
+        <div class="concept-title">Day 5 Complete Summary</div>
+    </div>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Concept</th>
+            <th>Telugu Summary</th>
+            <th>Key Function</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>HTTP Fundamentals</td>
+            <td>Agent tool call = HTTP request</td>
+            <td><code>httpx.get() / .post()</code></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Status Codes</td>
+            <td>200=success, 429=slow down, 500=retry</td>
+            <td><code>response.status_code</code></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Exponential Backoff</td>
+            <td>Wait time double చేస్తూ retry</td>
+            <td><code>delay = base × 2^attempt</code></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>API Client</td>
+            <td>Auth + retry + parallel + metrics</td>
+            <td><code>client.get_many()</code></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>JSON Processing</td>
+            <td>Nested response parse చేయడం</td>
+            <td><code>json.loads() / .get()</code></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>API Key Security</td>
+            <td>Keys .env లో, code లో కాదు</td>
+            <td><code>os.getenv() + dotenv</code></td>
+        </tr>
+    </table>
+
+    <div class="key-point">
+        <div class="label">🎯 One-Line Takeaway</div>
+        <strong>Agents speak HTTP.</strong> Master APIs → Master agent communication.
+        ప్రతి tool call ఒక HTTP request. ప్రతి response ఒక JSON. ప్రతి failure ఒక retry opportunity.
+    </div>
+
+    <h2>🔗 Resources</h2>
+    <ul>
+        <li><strong>httpx docs:</strong> python-httpx.org</li>
+        <li><strong>OpenAI API:</strong> platform.openai.com/docs/api-reference</li>
+        <li><strong>Exponential Backoff (AWS):</strong> aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter</li>
+        <li><strong>python-dotenv:</strong> pypi.org/project/python-dotenv</li>
+        <li><strong>HTTP Status Codes:</strong> developer.mozilla.org/en-US/docs/Web/HTTP/Status</li>
+        <li><strong>Day 5 Code:</strong> github.com/24A31A04N2/agentic-ai-journey/tree/main/day-05</li>
+    </ul>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <strong>Day 5/150 — Agentic AI Mastery Roadmap</strong><br>
+    Mahendra Battula | Pragati Engineering College<br>
+    github.com/24A31A04N2/agentic-ai-journey<br><br>
+    <em>Tomorrow → Day 6: Building APIs with FastAPI — Agents don't just CALL APIs, they BECOME APIs!</em>
+</div>
+
+</body>
+</html>
