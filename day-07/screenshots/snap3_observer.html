@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 7 — Observer Pattern + Event Bus</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 40px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .editor {
+    background: #1e1e2e;
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 40px rgba(243,139,168,0.12);
+    width: 780px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .titlebar {
+    background: #181825;
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dot { width: 13px; height: 13px; border-radius: 50%; }
+  .dot.red { background: #f38ba8; }
+  .dot.yellow { background: #f9e2af; }
+  .dot.green { background: #a6e3a1; }
+  .titlebar span {
+    color: #a6adc8; font-size: 13px; margin-left: 10px;
+    font-family: 'Consolas', monospace;
+  }
+  .tab-bar {
+    background: #181825;
+    padding: 0 18px;
+    display: flex; gap: 2px;
+  }
+  .tab {
+    padding: 8px 16px;
+    color: #6c7086;
+    font-size: 12px;
+    font-family: 'Consolas', monospace;
+    border-radius: 8px 8px 0 0;
+  }
+  .tab.active {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-top: 2px solid #f38ba8;
+  }
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f38ba8, #fab387);
+    color: #1e1e2e;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+  }
+  .code-container {
+    padding: 20px 0;
+    overflow-x: auto;
+  }
+  .line {
+    display: flex;
+    padding: 1px 24px 1px 0;
+    line-height: 1.65;
+    font-size: 14px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  }
+  .line:hover { background: rgba(255,255,255,0.03); }
+  .line-num {
+    color: #45475a;
+    min-width: 50px;
+    text-align: right;
+    padding-right: 20px;
+    user-select: none;
+  }
+  .line-content { white-space: pre; }
+
+  .kw { color: #cba6f7; }
+  .fn { color: #89b4fa; }
+  .cls { color: #f9e2af; }
+  .str { color: #a6e3a1; }
+  .cmt { color: #6c7086; font-style: italic; }
+  .dec { color: #f38ba8; }
+  .op { color: #89dceb; }
+  .num { color: #fab387; }
+  .param { color: #f5c2e7; }
+  .self { color: #f38ba8; }
+  .type { color: #89b4fa; }
+  .plain { color: #cdd6f4; }
+
+  .footer {
+    background: #181825;
+    padding: 10px 18px;
+    display: flex; justify-content: space-between;
+    color: #6c7086; font-size: 11px;
+    font-family: 'Consolas', monospace;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+</style>
+</head>
+<body>
+<div class="editor">
+  <div class="titlebar">
+    <div class="dot red"></div>
+    <div class="dot yellow"></div>
+    <div class="dot green"></div>
+    <span>smart_research_assistant.py</span>
+    <span class="badge">Day 7 — Observer + Event Bus</span>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active">smart_research_assistant.py</div>
+  </div>
+  <div class="code-container">
+
+    <div class="line"><span class="line-num">97</span><span class="line-content"><span class="cmt"># ============================================================</span></span></div>
+    <div class="line"><span class="line-num">98</span><span class="line-content"><span class="cmt"># SECTION 2: Observer Pattern for Event Logging (Day 3 — OOP)</span></span></div>
+    <div class="line"><span class="line-num">99</span><span class="line-content"><span class="cmt"># ============================================================</span></span></div>
+    <div class="line"><span class="line-num">100</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">101</span><span class="line-content"><span class="kw">class</span> <span class="cls">ResearchEvent</span><span class="plain">(</span><span class="cls">Enum</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">102</span><span class="line-content">    <span class="plain">QUERY_RECEIVED </span><span class="op">=</span><span class="plain"> </span><span class="str">"query_received"</span></span></div>
+    <div class="line"><span class="line-num">103</span><span class="line-content">    <span class="plain">FETCH_STARTED  </span><span class="op">=</span><span class="plain"> </span><span class="str">"fetch_started"</span></span></div>
+    <div class="line"><span class="line-num">104</span><span class="line-content">    <span class="plain">FETCH_COMPLETED</span><span class="op">=</span><span class="plain"> </span><span class="str">"fetch_completed"</span></span></div>
+    <div class="line"><span class="line-num">105</span><span class="line-content">    <span class="plain">FETCH_FAILED   </span><span class="op">=</span><span class="plain"> </span><span class="str">"fetch_failed"</span></span></div>
+    <div class="line"><span class="line-num">106</span><span class="line-content">    <span class="plain">PROCESSING     </span><span class="op">=</span><span class="plain"> </span><span class="str">"processing"</span></span></div>
+    <div class="line"><span class="line-num">107</span><span class="line-content">    <span class="plain">REPORT_READY   </span><span class="op">=</span><span class="plain"> </span><span class="str">"report_ready"</span></span></div>
+    <div class="line"><span class="line-num">108</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">109</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">110</span><span class="line-content"><span class="kw">class</span> <span class="cls">EventObserver</span><span class="plain">(</span><span class="cls">ABC</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">111</span><span class="line-content">    <span class="str">"""Observer interface — Day 3 Observer Pattern."""</span></span></div>
+    <div class="line"><span class="line-num">112</span><span class="line-content">    <span class="dec">@abstractmethod</span></span></div>
+    <div class="line"><span class="line-num">113</span><span class="line-content">    <span class="kw">def</span> <span class="fn">on_event</span><span class="plain">(</span><span class="self">self</span><span class="plain">, </span><span class="param">event</span><span class="plain">: </span><span class="cls">ResearchEvent</span><span class="plain">, </span><span class="param">data</span><span class="plain">: </span><span class="type">Dict</span><span class="plain">) -> </span><span class="type">None</span><span class="plain">:</span></span></div>
+    <div class="line"><span class="line-num">114</span><span class="line-content">        <span class="plain">...</span></span></div>
+    <div class="line"><span class="line-num">115</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">116</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">117</span><span class="line-content"><span class="kw">class</span> <span class="cls">ConsoleLogger</span><span class="plain">(</span><span class="cls">EventObserver</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">118</span><span class="line-content">    <span class="str">"""Logs research events to console with timestamps."""</span></span></div>
+    <div class="line"><span class="line-num">119</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">120</span><span class="line-content">    <span class="plain">ICONS </span><span class="op">=</span><span class="plain"> {</span></span></div>
+    <div class="line"><span class="line-num">121</span><span class="line-content">        <span class="plain">ResearchEvent.QUERY_RECEIVED: </span><span class="str">"📥"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">122</span><span class="line-content">        <span class="plain">ResearchEvent.FETCH_STARTED:  </span><span class="str">"🔄"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">123</span><span class="line-content">        <span class="plain">ResearchEvent.FETCH_COMPLETED:</span><span class="str">"✅"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">124</span><span class="line-content">        <span class="plain">ResearchEvent.FETCH_FAILED:   </span><span class="str">"❌"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">125</span><span class="line-content">        <span class="plain">ResearchEvent.PROCESSING:     </span><span class="str">"⚙️"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">126</span><span class="line-content">        <span class="plain">ResearchEvent.REPORT_READY:   </span><span class="str">"📊"</span><span class="plain">,</span></span></div>
+    <div class="line"><span class="line-num">127</span><span class="line-content">    <span class="plain">}</span></span></div>
+    <div class="line"><span class="line-num">128</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">129</span><span class="line-content">    <span class="kw">def</span> <span class="fn">on_event</span><span class="plain">(</span><span class="self">self</span><span class="plain">, </span><span class="param">event</span><span class="plain">, </span><span class="param">data</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">130</span><span class="line-content">        <span class="plain">icon </span><span class="op">=</span><span class="plain"> </span><span class="self">self</span><span class="plain">.ICONS.</span><span class="fn">get</span><span class="plain">(event, </span><span class="str">"📌"</span><span class="plain">)</span></span></div>
+    <div class="line"><span class="line-num">131</span><span class="line-content">        <span class="plain">ts </span><span class="op">=</span><span class="plain"> datetime.</span><span class="fn">now</span><span class="plain">().</span><span class="fn">strftime</span><span class="plain">(</span><span class="str">"%H:%M:%S.%f"</span><span class="plain">)[:</span><span class="op">-</span><span class="num">3</span><span class="plain">]</span></span></div>
+    <div class="line"><span class="line-num">132</span><span class="line-content">        <span class="builtin">print</span><span class="plain">(</span><span class="str">f"  [{ts}] {icon} {event.value}: {data['message']}"</span><span class="plain">)</span></span></div>
+    <div class="line"><span class="line-num">133</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">134</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">135</span><span class="line-content"><span class="kw">class</span> <span class="cls">EventBus</span><span class="plain">:</span></span></div>
+    <div class="line"><span class="line-num">136</span><span class="line-content">    <span class="str">"""Central event dispatcher — multiple observers."""</span></span></div>
+    <div class="line"><span class="line-num">137</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">138</span><span class="line-content">    <span class="kw">def</span> <span class="fn">subscribe</span><span class="plain">(</span><span class="self">self</span><span class="plain">, </span><span class="param">observer</span><span class="plain">: </span><span class="cls">EventObserver</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">139</span><span class="line-content">        <span class="self">self</span><span class="plain">._observers.</span><span class="fn">append</span><span class="plain">(observer)</span></span></div>
+    <div class="line"><span class="line-num">140</span><span class="line-content"></span></div>
+    <div class="line"><span class="line-num">141</span><span class="line-content">    <span class="kw">def</span> <span class="fn">emit</span><span class="plain">(</span><span class="self">self</span><span class="plain">, </span><span class="param">event</span><span class="plain">, </span><span class="param">data</span><span class="plain">):</span></span></div>
+    <div class="line"><span class="line-num">142</span><span class="line-content">        <span class="kw">for</span><span class="plain"> observer </span><span class="kw">in</span><span class="plain"> </span><span class="self">self</span><span class="plain">._observers:</span></span></div>
+    <div class="line"><span class="line-num">143</span><span class="line-content">            <span class="plain">observer.</span><span class="fn">on_event</span><span class="plain">(event, data)</span></span></div>
+
+  </div>
+  <div class="footer">
+    <span>Python 3.11 · UTF-8</span>
+    <span>Ln 97, Col 1 · Spaces: 4</span>
+  </div>
+</div>
+</body>
+</html>
