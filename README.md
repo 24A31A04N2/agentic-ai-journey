@@ -1,6 +1,6 @@
 # 🤖 Agentic AI Journey — 150-Day Mastery Roadmap
 
-![Progress](https://img.shields.io/badge/Day-8%2F150-blue?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Day-9%2F150-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
 ![Phase](https://img.shields.io/badge/Phase-1%3A%20Foundations-orange?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-3fb950?style=for-the-badge)
@@ -22,6 +22,7 @@
 | [Day 06](./day-06/) | Building APIs with FastAPI | Phase 1 | ✅ Done |
 | [Day 07](./day-07/) | Practice Day — Week 1 Integration Project | Phase 1 | ✅ Done |
 | [Day 08](./day-08/) | Error Handling & Logging for Production | Phase 2 | ✅ Done |
+| [Day 09](./day-09/) | Testing — How Professionals Ship Code | Phase 2 | ✅ Done |
 | ... | ... | ... | ... |
 | Day 150 | Final Portfolio & Job Applications | Phase 7 | ⏳ |
 
