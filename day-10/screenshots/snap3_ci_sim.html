@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Day 10 — CI Pipeline Simulator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  }
+
+  .window {
+    width: 800px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08);
+  }
+
+  .titlebar {
+    background: #181825;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .dots { display: flex; gap: 7px; }
+  .dot { width: 13px; height: 13px; border-radius: 50%; }
+  .dot-red    { background: #f38ba8; }
+  .dot-yellow { background: #f9e2af; }
+  .dot-green  { background: #a6e3a1; }
+
+  .filename {
+    color: #6c7086;
+    font-size: 12.5px;
+    margin-left: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  .tabs {
+    background: #1e1e2e;
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .tab {
+    padding: 9px 20px;
+    font-size: 12.5px;
+    color: #6c7086;
+    border-right: 1px solid rgba(255,255,255,0.04);
+    cursor: default;
+  }
+
+  .tab.active {
+    color: #cdd6f4;
+    background: #1e1e2e;
+    border-top: 2px solid #a6e3a1;
+    padding-top: 7px;
+  }
+
+  .editor { background: #1e1e2e; padding: 0; overflow: hidden; }
+
+  .badge-bar {
+    background: linear-gradient(90deg, #a6e3a1, #94e2d5);
+    padding: 7px 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #1e1e2e;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .code-area { padding: 16px 0 20px 0; }
+
+  .line {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5px 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    transition: background 0.1s;
+  }
+  .line:hover { background: rgba(255,255,255,0.03); }
+
+  .ln {
+    color: #45475a;
+    text-align: right;
+    width: 46px;
+    min-width: 46px;
+    padding-right: 20px;
+    user-select: none;
+    font-size: 12.5px;
+    padding-top: 1px;
+  }
+
+  .code { flex: 1; padding-right: 24px; white-space: pre; }
+
+  .kw   { color: #cba6f7; }
+  .fn   { color: #89b4fa; }
+  .cls  { color: #f9e2af; }
+  .str  { color: #a6e3a1; }
+  .cmt  { color: #6c7086; font-style: italic; }
+  .dec  { color: #f38ba8; }
+  .op   { color: #89dceb; }
+  .num  { color: #fab387; }
+  .param{ color: #f5c2e7; }
+  .self { color: #f38ba8; }
+  .plain{ color: #cdd6f4; }
+
+  .statusbar {
+    background: #181825;
+    padding: 5px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .status-left { display: flex; gap: 14px; }
+  .status-item { color: #45475a; font-size: 11px; }
+  .status-item.active { color: #a6e3a1; }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dots">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+    </div>
+    <span class="filename">day10_workflow.py — agentic-ai-journey/day-10</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab">day10_workflow.py</div>
+    <div class="tab active">ci_simulator</div>
+  </div>
+
+  <div class="badge-bar">
+    <span>⚙️</span>
+    Day 10 — Local CI Pipeline Simulator
+  </div>
+
+  <div class="editor">
+    <div class="code-area">
+
+<div class="line"><span class="ln">203</span><span class="kw">class</span> <span class="cls">CISimulator</span>:</div>
+<div class="line"><span class="ln">204</span>    <span class="str">"""Simulates GitHub Actions runner stages."""</span></div>
+<div class="line"><span class="ln">205</span>    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="param">self</span>, <span class="param">branch</span>: <span class="fn">str</span>, <span class="param">commits</span>: <span class="cls">List</span>[<span class="fn">str</span>], <span class="param">code_files</span>: <span class="cls">Dict</span>):</div>
+<div class="line"><span class="ln">206</span>        <span class="self">self</span>.<span class="plain">branch</span> <span class="op">=</span> <span class="plain">branch</span></div>
+<div class="line"><span class="ln">207</span>        <span class="self">self</span>.<span class="plain">commits</span> <span class="op">=</span> <span class="plain">commits</span></div>
+<div class="line"><span class="ln">208</span>        <span class="self">self</span>.<span class="plain">code_files</span> <span class="op">=</span> <span class="plain">code_files</span></div>
+<div class="line"><span class="ln">209</span>        <span class="self">self</span>.<span class="plain">success</span> <span class="op">=</span> <span class="num">True</span></div>
+<div class="line"><span class="ln">210</span></div>
+<div class="line"><span class="ln">217</span>    <span class="kw">def</span> <span class="fn">run_pipeline</span>(<span class="param">self</span>) -> <span class="fn">bool</span>:</div>
+<div class="line"><span class="ln">218</span>        <span class="fn">print</span>(<span class="str">"🚀 Starting simulated GitHub Actions runner..."</span>)</span></div>
+<div class="line"><span class="ln">219</span>        <span class="cmt"># STAGE 1: Git Branch Check</span></div>
+<div class="line"><span class="ln">220</span>        <span class="self">self</span>.<span class="fn">log_header</span>(<span class="str">"Git Branch Name Validation"</span>)</span></div>
+<div class="line"><span class="ln">221</span>        <span class="kw">try</span>:</span></div>
+<div class="line"><span class="ln">222</span>            <span class="cls">BranchValidator</span>.<span class="fn">validate</span>(<span class="self">self</span>.<span class="plain">branch</span>)</span></div>
+<div class="line"><span class="ln">223</span>            <span class="fn">print</span>(f<span class="str">"  ✅ Branch '{self.branch}' conforms."</span>)</span></div>
+<div class="line"><span class="ln">224</span>        <span class="kw">except</span> <span class="cls">BranchValidationError</span> <span class="kw">as</span> <span class="plain">e</span>:</span></div>
+<div class="line"><span class="ln">225</span>            <span class="fn">print</span>(f<span class="str">"  ❌ Branch FAILED: {e}"</span>)</span></div>
+<div class="line"><span class="ln">226</span>            <span class="self">self</span>.<span class="plain">success</span> <span class="op">=</span> <span class="num">False</span></div>
+<div class="line"><span class="ln">227</span></span></div>
+<div class="line"><span class="ln">229</span>        <span class="cmt"># STAGE 2: Commit Messages Check</span></div>
+<div class="line"><span class="ln">230</span>        <span class="self">self</span>.<span class="fn">log_header</span>(<span class="str">"Conventional Commits Check"</span>)</span></div>
+<div class="line"><span class="ln">231</span>        <span class="kw">for</span> <span class="plain">i</span>, <span class="plain">commit</span> <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="self">self</span>.<span class="plain">commits</span>, <span class="num">1</span>):</span></div>
+<div class="line"><span class="ln">232</span>            <span class="kw">try</span>:</span></div>
+<div class="line"><span class="ln">233</span>                <span class="cls">CommitValidator</span>.<span class="fn">validate</span>(<span class="plain">commit</span>)</span></div>
+<div class="line"><span class="ln">234</span>                <span class="fn">print</span>(f<span class="str">"  ✅ Commit #{i} conforms."</span>)</span></div>
+<div class="line"><span class="ln">235</span>            <span class="kw">except</span> <span class="cls">CommitValidationError</span> <span class="kw">as</span> <span class="plain">e</span>:</span></div>
+<div class="line"><span class="ln">236</span>                <span class="fn">print</span>(f<span class="str">"  ❌ Commit #{i} FAILED: '{commit}' | {e}"</span>)</span></div>
+<div class="line"><span class="ln">237</span>                <span class="self">self</span>.<span class="plain">success</span> <span class="op">=</span> <span class="num">False</span></div>
+<div class="line"><span class="ln">238</span></span></div>
+<div class="line"><span class="ln">240</span>        <span class="cmt"># STAGE 3: Pre-commit Linter Check</span></div>
+<div class="line"><span class="ln">241</span>        <span class="self">self</span>.<span class="fn">log_header</span>(<span class="str">"Automated Code Linting (AST Parser)"</span>)</span></div>
+<div class="line"><span class="ln">242</span>        <span class="kw">for</span> <span class="plain">path</span>, <span class="plain">code</span> <span class="kw">in</span> <span class="self">self</span>.<span class="plain">code_files</span>.<span class="plain">items</span>():</span></div>
+<div class="line"><span class="ln">243</span>            <span class="plain">linter</span> <span class="op">=</span> <span class="cls">ASTCodeLinter</span>(<span class="plain">path</span>)</span></div>
+<div class="line"><span class="ln">244</span>            <span class="plain">issues</span> <span class="op">=</span> <span class="plain">linter</span>.<span class="fn">check_file</span>(<span class="plain">code</span>)</span></div>
+<div class="line"><span class="ln">245</span>            <span class="kw">if</span> <span class="kw">not</span> <span class="plain">issues</span>:</span></div>
+<div class="line"><span class="ln">246</span>                <span class="fn">print</span>(f<span class="str">"    ✅ '{path}' passed AST checks."</span>)</span></div>
+<div class="line"><span class="ln">247</span>            <span class="kw">else</span>:</span></div>
+<div class="line"><span class="ln">248</span>                <span class="self">self</span>.<span class="plain">success</span> <span class="op">=</span> <span class="num">False</span></div>
+<div class="line"><span class="ln">249</span>        <span class="kw">return</span> <span class="self">self</span>.<span class="plain">success</span></div>
+
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="status-left">
+      <span class="status-item active">✓ Python 3.11</span>
+      <span class="status-item">CI Simulator</span>
+      <span class="status-item">Day 10/150</span>
+    </div>
+    <span class="status-item">Lines 203–249 · UTF-8</span>
+  </div>
+</div>
+</body>
+</html>
