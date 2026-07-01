@@ -1,6 +1,6 @@
 # 🤖 Agentic AI Journey — 150-Day Mastery Roadmap
 
-![Progress](https://img.shields.io/badge/Day-12%2F150-blue?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Day-13%2F150-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
 ![Phase](https://img.shields.io/badge/Phase-1%3A%20Foundations-orange?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-3fb950?style=for-the-badge)
@@ -26,6 +26,7 @@
 | [Day 10](./day-10/) | Git Mastery & Professional Workflow | Phase 1 | ✅ Done |
 | [Day 11](./day-11/) | Databases & Data Persistence — Agent Memory That Survives | Phase 1 | ✅ Done |
 | [Day 12](./day-12/) | Concurrency & Parallelism — Making Agents Think in Parallel | Phase 1 | ✅ Done |
+| [Day 13](./day-13/) | Configuration Management & CLI — Agents That Adapt | Phase 1 | ✅ Done |
 | ... | ... | ... | ... |
 | Day 150 | Final Portfolio & Job Applications | Phase 7 | ⏳ |
 
