@@ -1,0 +1,24 @@
+# ============================================================================
+# Day 14 Capstone Configuration: Self-Correcting Data Pipeline
+# ============================================================================
+
+pipeline:
+  db_path: "data/pipeline.db"
+  input_dir: "data/input"
+  quarantine_dir: "data/quarantine"
+  archive_dir: "data/archive"
+  log_level: "INFO"
+  max_workers: 4
+  batch_size: 50
+
+ingestion:
+  retry_attempts: 3
+  retry_backoff_factor: 2.0
+  auto_correct_enabled: true
+  schema_version: "1.0"
+
+defaults:
+  agent_id: "agent-helper-v1"
+  status: "success"
+  tokens_used: 0
+  cost: 0.0
