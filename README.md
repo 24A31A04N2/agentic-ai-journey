@@ -1,6 +1,6 @@
 # 🤖 Agentic AI Journey — 150-Day Mastery Roadmap
 
-![Progress](https://img.shields.io/badge/Day-15%2F150-blue?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Day-16%2F150-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
 ![Phase](https://img.shields.io/badge/Phase-2%3A%20Essentials-orange?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-3fb950?style=for-the-badge)
@@ -29,6 +29,7 @@
 | [Day 13](./day-13/) | Configuration Management & CLI — Agents That Adapt | Phase 1 | ✅ Done |
 | [Day 14](./day-14/) | Week 2 Capstone: Self-Correcting Agentic Data Pipeline | Phase 1 | ✅ Done |
 | [Day 15](./day-15/) | NumPy & Vector Mathematics — Embeddings & Attention | Phase 2 | ✅ Done |
+| [Day 16](./day-16/) | Pandas & Data Wrangling — Agents That Clean Their Own Data | Phase 2 | ✅ Done |
 | ... | ... | ... | ... |
 | Day 150 | Final Portfolio & Job Applications | Phase 7 | ⏳ |
 
