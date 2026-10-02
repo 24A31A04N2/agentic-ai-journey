@@ -1,100 +1,58 @@
-# 🤖 Day 14: Week 2 Capstone — Self-Correcting Agentic Data Pipeline
+# 🤖 Day 14/250 — AI/ML Landscape — Conceptual Foundations
 
-An end-to-end production-grade Python ETL pipeline integrating error handling, logging, testing, databases, config management, parallelism, and CLIs. This project demonstrates how an agentic pipeline can ingest raw JSON/CSV inputs, enforce a validation schema, heal corrupt or format-driffed values automatically (Self-Correction), and load cleaned records in parallel into a SQLite database.
+![Day](https://img.shields.io/badge/Day-14/250-blue)
+![Phase](https://img.shields.io/badge/Phase-1-purple)
+![Language](https://img.shields.io/badge/Language-Python_3.11-yellow)
 
----
+> *"To build agents that can reason and act, we must first deeply understand the statistical engine that gives them language and logic."*
 
-## 🗺️ Project Architecture & Pipeline Flow
+## 📚 What I Learned Today
 
-The pipeline executes through a series of robust modules:
+| Concept | Description |
+|---------|-------------|
+| **AI Taxonomy** | Understanding the clear evolution from Rule-Based AI -> ML -> DL -> GenAI -> Agentic AI. |
+| **Neural Networks** | First principles of layers, weights, biases, and backpropagation using a simple XOR example. |
+| **Next-Token Prediction** | How LLMs essentially operate as massive statistical engines predicting the next word based on probability. |
+| **Self-Attention** | The core of the Transformer architecture, explaining how words weigh their relevance to every other word in a sequence. |
+| **Encoder vs Decoder** | The structural difference between bidirectional models (BERT) and autoregressive models (GPT). |
+| **Agentic Frontier** | Why the shift from static text generation to autonomous tool-use and reasoning loops is the next logical step. |
 
-```mermaid
-graph TD
-    A[Incoming Raw Files JSON/CSV] --> B[Pipeline Ingestion Engine]
-    B --> C{Parse Success?}
-    C -- No (Try Heal) --> H[Syntax Healer]
-    H -- Healed --> D[Validation & Self-Correction]
-    H -- Unrecoverable --> G[Quarantine Table / Folder]
-    C -- Yes --> D
-    
-    D --> E{Valid Schema?}
-    E -- Yes / Corrected --> F[(SQLite: processed_records)]
-    E -- No (Unrecoverable) --> G[(SQLite: quarantined_records)]
-    
-    B --> I[Concurrent Workers ThreadPool]
-    I --> F
-    I --> G
-    
-    F --> J[Archive Ingested Files]
-    G --> K[Alert Logs & Quarantine File Storage]
-    
-    J & K --> L[Generate Run Metrics pipeline_metrics]
+## 🛠️ What I Built
+
+- A multi-section conceptual Python script (`day14_ai_ml_landscape.py`) utilizing pure Python and NumPy.
+- A **2-layer Neural Network** trained from scratch to solve the XOR problem.
+- A **Bigram Language Model** demonstrating rudimentary next-token prediction.
+- A scaled dot-product **Self-Attention** mechanism simulator.
+- A matrix-based visualization comparing **Encoder (BERT-style)** vs **Decoder (GPT-style)** masking.
+
+## 💻 Code Highlights
+
+### Self-Attention Core Mechanism
+```python
+# Scaled dot-product attention
+scores = np.dot(Q, K.T) / np.sqrt(d_k)
+
+# Softmax for attention weights
+exp_scores = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
+attention_weights = exp_scores / np.sum(exp_scores, axis=-1, keepdims=True)
+
+# Contextualized output
+output = np.dot(attention_weights, V)
 ```
 
----
+## 🚀 Run It
 
-## 🛠️ Key Features
-
-1. **Config Management Hierarchy (`config.yaml` + Environment Variables + CLI)**
-   - Custom YAML parser written from scratch with zero third-party dependencies.
-   - Values from `config.yaml` can be overrode using environmental variables (e.g. `PIPELINE_DB_PATH`) and runtime parameters.
-2. **Robust Self-Correction Engine**
-   - **Timestamps:** Standardizes string timestamps (`YYYY-MM-DD HH:MM:SS`, `DD/MM/YYYY`, Unix floats) to timezone-aware ISO 8601 UTC.
-   - **Integers/Floats:** Cleans messy numeric strings (e.g. currency signs `$`, commas, white spaces) and handles floating integers safely.
-   - **Missing Data:** Fallback default injection for fields like `agent_id`, `status`, `cost`, and `tokens_used`.
-   - **Structured IDs:** Auto-assigns UUIDs to records missing identifiers while preserving correction traces.
-3. **Thread-Safe Concurrent Execution**
-   - Orchestrates multi-file parsing, validation, and serialization via `ThreadPoolExecutor`.
-   - SQLite transactions are protected using a centralized threading mutex (`threading.Lock`) combined with exponential backoff on database locks.
-4. **Structured SQLite DB Schema**
-   - `processed_records`: Clean/corrected records with a JSON history log of the applied changes.
-   - `quarantined_records`: Payload trace and reason description for failed items.
-   - `pipeline_metrics`: Performance audit logging of every run duration, row counts, and status indicators.
-5. **Polished Argparse CLI**
-   - Subcommands: `run`, `generate-data`, `inspect`, and `test`.
-
----
-
-## 🚀 How to Run the Pipeline
-
-### 1. Generate Mock Test Data
-Creates files inside `data/input` representing clean data, repairable data, syntactically malformed JSON, and fully invalid records:
 ```bash
-python day14_capstone_pipeline.py generate-data
+cd day-14
+python day14_ai_ml_landscape.py
 ```
 
-### 2. Execute Ingestion Run
-Starts the parallel ingestion pipeline:
-```bash
-python day14_capstone_pipeline.py run
-```
+## 🧠 Why This Matters for Agents
+Agentic AI isn't magic; it is an orchestration layer built on top of autoregressive decoders. Understanding attention, causal masking, and transition probabilities helps in debugging hallucinations, optimizing prompt context windows, and building reliable agent reasoning loops (like ReAct).
 
-### 3. Inspect Database Tables
-Check execution history and records loaded in SQLite:
-```bash
-# Check run metrics
-python day14_capstone_pipeline.py inspect --table metrics
+## 📖 Resources
 
-# Check processed records
-python day14_capstone_pipeline.py inspect --table processed
-
-# Check quarantined items
-python day14_capstone_pipeline.py inspect --table quarantine
-```
-
-### 4. Execute the Built-in Test Suite
-Run the fully automated end-to-end integration test runner:
-```bash
-python day14_capstone_pipeline.py test
-```
-
----
-
-## 📂 Project Structure
-
-```
-day-14/
-├── config.yaml                    # Global pipeline configuration
-├── day14_capstone_pipeline.py     # Self-Correcting Data Pipeline
-└── README.md                      # Documentation & architecture notes
-```
+| Resource | Description |
+|----------|-------------|
+| [Attention Is All You Need](https://arxiv.org/abs/1706.03762) | The seminal paper introducing the Transformer architecture. |
+| [Andrej Karpathy - Let's build GPT](https://www.youtube.com/watch?v=kCc8FmEb1nY) | Fantastic foundational video on from-scratch language modeling. |
