@@ -1,6 +1,6 @@
 # 🤖 Agentic AI Journey — 250-Day Mastery Roadmap (v5)
 
-![Progress](https://img.shields.io/badge/Day-14%2F250-blue?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Day-17%2F250-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-3572a5?style=for-the-badge&logo=python)
 ![Phase](https://img.shields.io/badge/Phase-1%3A%20Foundations-orange?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Roadmap-v5.0-blueviolet?style=for-the-badge)
@@ -43,9 +43,9 @@
 | [Day 12](./day-12/) | Debugging & Failure Analysis | ✅ Done |
 | [Day 13](./day-13/) | Linux & CLI Essentials | ✅ Done |
 | [Day 14](./day-14/) | AI/ML Landscape — Conceptual Foundations | ✅ Done |
-| Day 15 | Tokenization, Embeddings & Semantic Similarity | ⏳ |
-| Day 16 | Context Windows & Model Capabilities | ⏳ |
-| Day 17 | Model Routing & Cost Engineering Basics | ⏳ |
+| [Day 15](./day-15/) | Tokenization, Embeddings & Semantic Similarity | ✅ Done |
+| [Day 16](./day-16/) | Context Windows & Model Capabilities | ✅ Done |
+| [Day 17](./day-17/) | Model Routing & Cost Engineering Basics | ✅ Done |
 | Day 18 | Practice Day — Integration Build #1 | ⏳ |
 | Day 19 | Structured Outputs & Schema-Enforced Extraction | ⏳ |
 | Day 20 | Prompt Security — First Look | ⏳ |
